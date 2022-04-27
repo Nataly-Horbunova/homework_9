@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDo list</title>
+</head>
+
+<body>
+
+    <script>
+        const toDoList = {
+            tasks: [
+                {
+                    task: 'name1',
+                    state: false
+                },
+
+                {
+                    task: 'name2',
+                    state: true
+                },
+                {
+                    task: 'name3',
+                    state: true
+                },
+
+                {
+                    task: 'name4',
+                    state: true
+                }
+            ],
+
+            addTask(newTask) {
+                let findTask = this.tasks.find(item => item.task === newTask);
+
+                if (!findTask) {
+                    const newTaskObj = {};
+                    newTaskObj.task = newTask;
+                    newTaskObj.state = false;
+                    this.tasks.push(newTaskObj);
+                } else {
+                    alert('Такая задача уже существует!')
+                }
+            },
+
+            deleteTask(deleteTask) {
+                let deleteTaskIndex = this.tasks.findIndex(item => item.task === deleteTask);
+
+                if (deleteTaskIndex >= 0) {
+                    this.tasks.splice(deleteTaskIndex, 1);
+                } else {
+                    alert('Такая задача не существует!')
+                }
+            },
+
+            editTask(taskToEdit, taskEdited, stateEdited) {
+                let editTaskIndex = this.tasks.findIndex(item => item.task === taskToEdit);
+
+                if (editTaskIndex >= 0) {
+                    this.tasks[editTaskIndex].task = taskEdited;
+                    this.tasks[editTaskIndex].state = stateEdited;
+                } else {
+                    alert('Такая задача не существует!')
+                }
+            },
+
+            calcTasks() {
+                let tasksStates = {};
+                let activeCount = 0;
+                let completedCount = 0;
+
+                for (let item of this.tasks) {
+                    if (item.state) activeCount++;
+                    else completedCount++;
+                }
+
+                tasksStates.tasksActiveQty = activeCount;
+                tasksStates.tasksCompletedQty = completedCount;
+                tasksStates.tasksGeneralQty = this.tasks.length;
+
+                return tasksStates;
+            }
+
+        }
+
+        for (let prop in toDoList) {
+            Object.defineProperty(toDoList, prop, {
+                configurable: false,
+                writable: false
+            });
+        }
+
+        const newTask = prompt('Введите новую задачу', '');
+        toDoList.addTask(newTask);
+
+        const taskDelete = prompt('Введите задачу, которую нужно удалить', '');
+        toDoList.deleteTask(taskDelete);
+
+        const taskToEdit = prompt('Введите задачу, которую нужно отредактировать', '');
+        const taskEdited = prompt('Введите отредактированную задачу', '');
+        const stateEdited = confirm('Задача выполнена?')
+        toDoList.editTask(taskToEdit, taskEdited, stateEdited);
+
+        console.log(toDoList);
+
+        const tasksStates = toDoList.calcTasks();
+        console.log(tasksStates);
+
+
+    </script>
+
+</body>
+
+</html>
