@@ -34,56 +34,47 @@
             ],
 
             addTask(newTask) {
-                let findTask = this.tasks.find(item => item.task === newTask);
+                const findTask = this.tasks.find(item => item.task === newTask);
 
                 if (!findTask) {
                     const newTaskObj = {};
                     newTaskObj.task = newTask;
                     newTaskObj.state = false;
                     this.tasks.push(newTaskObj);
-                } else {
-                    alert('Такая задача уже существует!')
                 }
             },
 
             deleteTask(deleteTask) {
-                let deleteTaskIndex = this.tasks.findIndex(item => item.task === deleteTask);
+                const deleteTaskIndex = this.tasks.findIndex(item => item.task === deleteTask);
 
                 if (deleteTaskIndex >= 0) {
                     this.tasks.splice(deleteTaskIndex, 1);
-                } else {
-                    alert('Такая задача не существует!')
                 }
             },
 
             editTask(taskToEdit, taskEdited, stateEdited) {
-                let editTaskIndex = this.tasks.findIndex(item => item.task === taskToEdit);
+                const editTaskIndex = this.tasks.findIndex(item => item.task === taskToEdit);
 
                 if (editTaskIndex >= 0) {
                     this.tasks[editTaskIndex].task = taskEdited;
                     this.tasks[editTaskIndex].state = stateEdited;
-                } else {
-                    alert('Такая задача не существует!')
                 }
             },
 
             calcTasks() {
-                let tasksStates = {};
                 let activeCount = 0;
                 let completedCount = 0;
+                this.tasksStates = {};
 
                 for (let item of this.tasks) {
                     if (item.state) activeCount++;
                     else completedCount++;
                 }
 
-                tasksStates.tasksActiveQty = activeCount;
-                tasksStates.tasksCompletedQty = completedCount;
-                tasksStates.tasksGeneralQty = this.tasks.length;
-
-                return tasksStates;
+                this.tasksStates.tasksActiveQty = activeCount;
+                this.tasksStates.tasksCompletedQty = completedCount;
+                this.tasksStates.tasksGeneralQty = this.tasks.length;
             }
-
         }
 
         for (let prop in toDoList) {
@@ -104,11 +95,9 @@
         const stateEdited = confirm('Задача выполнена?')
         toDoList.editTask(taskToEdit, taskEdited, stateEdited);
 
+        toDoList.calcTasks();
+
         console.log(toDoList);
-
-        const tasksStates = toDoList.calcTasks();
-        console.log(tasksStates);
-
 
     </script>
 
