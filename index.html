@@ -64,16 +64,18 @@
             calcTasks() {
                 let activeCount = 0;
                 let completedCount = 0;
-                this.tasksStates = {};
 
-                for (let item of this.tasks) {
+                this.tasksStates = this.tasks.reduce((accum, item) => {
+                    
                     if (item.state) activeCount++;
                     else completedCount++;
-                }
 
-                this.tasksStates.tasksActiveQty = activeCount;
-                this.tasksStates.tasksCompletedQty = completedCount;
-                this.tasksStates.tasksGeneralQty = this.tasks.length;
+                    accum.tasksActiveQty = activeCount;
+                    accum.tasksCompletedQty = completedCount;
+                    accum.tasksGeneralQty = this.tasks.length;
+
+                    return accum;
+                }, {});
             }
         }
 
