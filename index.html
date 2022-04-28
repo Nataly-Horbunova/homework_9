@@ -62,20 +62,16 @@
             },
 
             calcTasks() {
-                let activeCount = 0;
-                let completedCount = 0;
-
                 this.tasksStates = this.tasks.reduce((accum, item) => {
-                    
-                    if (item.state) activeCount++;
-                    else completedCount++;
 
-                    accum.tasksActiveQty = activeCount;
-                    accum.tasksCompletedQty = completedCount;
-                    accum.tasksGeneralQty = this.tasks.length;
+                    item.state ? tasksActiveQty++ : tasksCompedletQty++;
 
                     return accum;
-                }, {});
+                }, {
+                    tasksActiveQty: 0,
+                    tasksCompedletQty: 0,
+                    tasksGeneralQty: this.tasks.length
+                });
             }
         }
 
