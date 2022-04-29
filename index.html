@@ -34,12 +34,18 @@
             ],
 
             addTask(newTask) {
+                if (!newTask.trim()) {
+                    return
+                }
+
                 const findTask = this.tasks.find(item => item.task === newTask);
 
                 if (!findTask) {
-                    const newTaskObj = {};
-                    newTaskObj.task = newTask;
-                    newTaskObj.state = false;
+                    const newTaskObj = {
+                        task: newTask,
+                        state: false
+                    }
+
                     this.tasks.push(newTaskObj);
                 }
             },
@@ -61,17 +67,26 @@
                 }
             },
 
-            calcTasks() {
-                this.tasksStates = this.tasks.reduce((accum, item) => {
+            toggleState(task) {
+                const index = this.tasks.findIndex(item => item.task === task);
 
-                    item.state ? tasksActiveQty++ : tasksCompedletQty++;
+                if (index >= 0) {
+                    this.tasks[index].state = !this.tasks[index].state;
+                }
+
+            },
+
+            statisctics() {
+                return this.tasks.reduce((accum, item) => {
+
+                    item.state ? accum.active++ : accum.completed++;
 
                     return accum;
                 }, {
-                    tasksActiveQty: 0,
-                    tasksCompedletQty: 0,
-                    tasksGeneralQty: this.tasks.length
-                });
+                    active: 0,
+                    completed: 0,
+                    total: this.tasks.length
+                })
             }
         }
 
@@ -93,7 +108,10 @@
         const stateEdited = confirm('Задача выполнена?')
         toDoList.editTask(taskToEdit, taskEdited, stateEdited);
 
-        toDoList.calcTasks();
+        const task = prompt('Введите задачу, которой нужно поменять статус', '');
+        toDoList.toggleState(task);
+
+        toDoList.statisctics();
 
         console.log(toDoList);
 
